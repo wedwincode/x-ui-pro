@@ -1,4 +1,3 @@
-
 #!/bin/bash
 #################### x-ui-pro v2.4.3 @ github.com/GFW4Fun ##############################################
 [[ $EUID -ne 0 ]] && echo "not root!" && sudo su -
@@ -46,16 +45,16 @@ make_port() {
 		fi
 	done
 }
-sub_port=$(make_port)
+sub_port=21027
 panel_port=$(make_port)
-web_path=$(tr -dc A-Za-z0-9 </dev/urandom | head -c "$(shuf -i 6-12 -n 1)")
-sub2singbox_path=$(tr -dc A-Za-z0-9 </dev/urandom | head -c "$(shuf -i 6-12 -n 1)")
-sub_path=$(tr -dc A-Za-z0-9 </dev/urandom | head -c "$(shuf -i 6-12 -n 1)")
-json_path=$(tr -dc A-Za-z0-9 </dev/urandom | head -c "$(shuf -i 6-12 -n 1)")
+web_path="PAC5SGpKLA"
+sub2singbox_path="SVjvJDwE"
+sub_path="XD7zOWqfQ"
+json_path="ZRP19cyCg1a"
 panel_path=$(tr -dc A-Za-z0-9 </dev/urandom | head -c "$(shuf -i 6-12 -n 1)")
-ws_port=$(make_port)
-ws_path=$(tr -dc A-Za-z0-9 </dev/urandom | head -c "$(shuf -i 6-12 -n 1)")web_path
-xhttp_path=$(tr -dc A-Za-z0-9 </dev/urandom | head -c "$(shuf -i 6-12 -n 1)")
+ws_port=18103
+ws_path="xEVOUvKweb_path"
+xhttp_path="yLbP2Le2F"
 config_username=$(gen_random_string 10)
 config_password=$(gen_random_string 10)
 ##################################Random Port and Path #################################################
