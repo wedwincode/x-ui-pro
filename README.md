@@ -27,7 +27,7 @@
 ### Install X-UI-PRO
 
 ```
-bash <(wget -qO- https://github.com/mozaroc/x-ui-pro/raw/master/x-ui-pro.sh) -install yes -panel 1 -ONLY_CF_IP_ALLOW no
+bash <(wget -qO- https://github.com/wedwincode/x-ui-pro/raw/master/x-ui-pro.sh) -install yes -panel 1 -ONLY_CF_IP_ALLOW no
 ```
 > 
 > Do not change SubDomain for renew SSL❗
@@ -35,12 +35,12 @@ bash <(wget -qO- https://github.com/mozaroc/x-ui-pro/raw/master/x-ui-pro.sh) -in
 
 **Uninstall X-UI-PRO**:x:
 ```
-sudo su -c "bash <(wget -qO- https://raw.githubusercontent.com/mozaroc/x-ui-pro/master/x-ui-pro.sh) -Uninstall yes"
+sudo su -c "bash <(wget -qO- https://raw.githubusercontent.com/wedwincode/x-ui-pro/master/x-ui-pro.sh) -Uninstall yes"
 ```
 
 **backup panel and nginx configs**:x:
 ```
-sudo su -c "bash <(wget -qO- https://raw.githubusercontent.com/mozaroc/x-ui-pro/master/backup.sh)"
+sudo su -c "bash <(wget -qO- https://raw.githubusercontent.com/wedwincode/x-ui-pro/master/backup.sh)"
 ```
 
 ➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖

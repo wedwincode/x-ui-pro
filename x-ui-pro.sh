@@ -46,18 +46,18 @@ make_port() {
 	done
 }
 
-sub_port=$(make_port)
+sub_port=21027
 panel_port=$(make_port)
-web_path=$(gen_random_string 10)
-sub2singbox_path=$(gen_random_string 10)
-sub_path=$(gen_random_string 10)
-json_path=$(gen_random_string 10)
+web_path="PAC5SGpKLA"
+sub2singbox_path="SVjvJDwE"
+sub_path="XD7zOWqfQ"
+json_path="ZRP19cyCg1a"
 panel_path=$(gen_random_string 10)
-ws_port=$(make_port)
-trojan_port=$(make_port)
-ws_path=$(gen_random_string 10)
-trojan_path=$(gen_random_string 10)
-xhttp_path=$(gen_random_string 10)
+ws_port=18103
+trojan_port=17528
+ws_path="xEVOUvKweb_path"
+trojan_path="gK2Pfhd4s"
+xhttp_path="yLbP2Le2F"
 config_username=$(gen_random_string 10)
 config_password=$(gen_random_string 10)
 AUTODOMAIN="n"
