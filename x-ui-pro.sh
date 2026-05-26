@@ -254,6 +254,7 @@ server {
     proxy_protocol on;
     set_real_ip_from unix:;
     listen          443;
+	listen         [::]:443;
     proxy_pass      \$sni_name;
     ssl_preread     on;
 }
@@ -290,7 +291,7 @@ server {
 	if (\$scheme ~* https) {set \$safe 1;}
 	if (\$ssl_server_name !~* ^(.+\.)?$domain\$ ) {set \$safe "\${safe}0"; }
 	if (\$safe = 10){return 444;}
-	if (\$request_uri ~ "(\"|'|\`|~|,|:|--|;|%|\\$|&&|\?\?|0x00|0X00|\||\\|\{|\}|\[|\]|<|>|\.\.\.|\.\.\/|\/\/\/)"){set \$hack 1;}
+	if (\$request_uri ~ "(\"|'|\`|~|,|:|;|%|\\$|&&|\?\?|0x00|0X00|\||\\|\{|\}|\[|\]|<|>|\.\.\.|\.\.\/|\/\/\/)"){set \$hack 1;}
 	error_page 400 401 402 403 500 501 502 503 504 =404 /404;
 	proxy_intercept_errors on;
 	#X-UI Admin Panel
@@ -298,7 +299,8 @@ server {
         proxy_http_version 1.1;
         proxy_set_header Upgrade \$http_upgrade;
         proxy_set_header Connection "upgrade";
-
+        proxy_set_header Upgrade websocket;
+        proxy_set_header Connection Upgrade;		
         proxy_set_header Host \$host;
 		proxy_set_header X-Real-IP \$remote_addr;
         proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
@@ -314,7 +316,8 @@ server {
         proxy_http_version 1.1;
         proxy_set_header Upgrade \$http_upgrade;
         proxy_set_header Connection "upgrade";
-
+        proxy_set_header Upgrade websocket;
+        proxy_set_header Connection Upgrade;		
         proxy_set_header Host \$host;
 		proxy_set_header X-Real-IP \$remote_addr;
         proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
@@ -476,7 +479,7 @@ server {
 	if (\$scheme ~* https) {set \$safe 1;}
 	if (\$ssl_server_name !~* ^(.+\.)?${reality_domain}\$ ) {set \$safe "\${safe}0"; }
 	if (\$safe = 10){return 444;}
-	if (\$request_uri ~ "(\"|'|\`|~|,|:|--|;|%|\\$|&&|\?\?|0x00|0X00|\||\\|\{|\}|\[|\]|<|>|\.\.\.|\.\.\/|\/\/\/)"){set \$hack 1;}
+	if (\$request_uri ~ "(\"|'|\`|~|,|:|;|%|\\$|&&|\?\?|0x00|0X00|\||\\|\{|\}|\[|\]|<|>|\.\.\.|\.\.\/|\/\/\/)"){set \$hack 1;}
 	error_page 400 401 402 403 500 501 502 503 504 =404 /404;
 	proxy_intercept_errors on;
 	#X-UI Admin Panel
@@ -530,7 +533,7 @@ if [[ -f $XUIDB ]]; then
         output=$(/usr/local/x-ui/bin/xray-linux-amd64 x25519)
 
         private_key=$(echo "$output" | grep "^PrivateKey:" | awk '{print $2}')
-        public_key=$(echo "$output" | grep "^Password:" | awk '{print $2}')
+        public_key=$(echo "$output" | grep "^Password" | awk '{print $3}')
 
         client_id=$(/usr/local/x-ui/bin/xray-linux-amd64 uuid)
         client_id2=$(/usr/local/x-ui/bin/xray-linux-amd64 uuid)
@@ -543,6 +546,8 @@ if [[ -f $XUIDB ]]; then
 	     INSERT INTO "settings" ("key", "value") VALUES ("subURI",  '${sub_uri}');
              INSERT INTO "settings" ("key", "value") VALUES ("subJsonPath",  '${json_path}');
 	     INSERT INTO "settings" ("key", "value") VALUES ("subJsonURI",  '${json_uri}');
+		 INSERT INTO "settings" ("key", "value") VALUES ("subClashEnable",  'false');
+		 INSERT INTO "settings" ("key", "value") VALUES ("subEnableRouting",  'false');
              INSERT INTO "settings" ("key", "value") VALUES ("subEnable",  'true');
              INSERT INTO "settings" ("key", "value") VALUES ("webListen",  '');
 	     INSERT INTO "settings" ("key", "value") VALUES ("webDomain",  '');
@@ -646,7 +651,7 @@ if [[ -f $XUIDB ]]; then
     ],
     "settings": {
       "publicKey": "${public_key}",
-      "fingerprint": "random",
+      "fingerprint": "chrome",
       "serverName": "",
       "spiderX": "/"
     }
@@ -739,7 +744,7 @@ if [[ -f $XUIDB ]]; then
              '0',
 	     '0',
              '${emoji_flag} xhttp',
-	     '1',
+	     '0',
              '0',
 	     '/dev/shm/uds2023.sock,0666',
              '0',
@@ -776,7 +781,7 @@ if [[ -f $XUIDB ]]; then
   ],
   "xhttpSettings": {
     "path": "/${xhttp_path}",
-    "host": "",
+    "host": "${domain}",
     "headers": {},
     "scMaxBufferedPosts": 30,
     "scMaxEachPostBytes": "1000000",
@@ -918,7 +923,7 @@ apt-get update && apt-get install -y -q wget curl tar tzdata
             fi
         fi
         echo -e "Got x-ui latest version: ${tag_version}, beginning the installation..."
-        wget -N -O /usr/local/x-ui-linux-$(arch).tar.gz https://github.com/MHSanaei/3x-ui/releases/download/${tag_version}/x-ui-linux-$(arch).tar.gz
+        wget -N -O /usr/local/x-ui-linux-$(arch).tar.gz https://github.com/MHSanaei/3x-ui/releases/download/v2.9.4/x-ui-linux-$(arch).tar.gz
         if [[ $? -ne 0 ]]; then
             echo -e "${red}Downloading x-ui failed, please be sure that your server can access GitHub ${plain}"
             exit 1
@@ -933,7 +938,7 @@ apt-get update && apt-get install -y -q wget curl tar tzdata
             exit 1
         fi
         
-        url="https://github.com/MHSanaei/3x-ui/releases/download/${tag_version}/x-ui-linux-$(arch).tar.gz"
+        url="https://github.com/MHSanaei/3x-ui/releases/download/v2.9.4/x-ui-linux-$(arch).tar.gz"
         echo -e "Beginning to install x-ui $1"
         wget -N -O /usr/local/x-ui-linux-$(arch).tar.gz ${url}
         if [[ $? -ne 0 ]]; then
